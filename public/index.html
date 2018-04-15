@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link type="text/css" rel="stylesheet" media="screen,projection" href="/css/bootstrap.min.css" />
+    <title>Demo</title>
+    <style type="text/css">
+        body {
+            background: white;
+        }
+        
+        .main-loader {
+            margin-left: 10%;
+            margin-top: 50px;
+          border: 16px solid #f3f3f3;
+          border-radius: 50%;
+          border-top: 16px solid #3498db;
+          width: 120px;
+          height: 120px;
+          -webkit-animation: main-spinner 2s linear infinite; /* Safari */
+          animation: main-spinner 2s linear infinite;
+        }
+
+        /* Safari */
+        @-webkit-keyframes main-spinner {
+          0% { -webkit-transform: rotate(0deg); }
+          100% { -webkit-transform: rotate(360deg); }
+        }
+
+        @keyframes main-spinner {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        .main-loader.small-loader {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            margin-left: 10px;
+            margin-top: 0px;
+            line-height: 1.42857143;
+        }
+        .small-loader-container {
+            display: inline;
+            position: relative;
+            top: 10px;
+        }
+    </style>
+
+
+    <body ng-app="demoApp" ng-controller="MainController">
+       
+       <div style="margin-left: 10%; margin-top: 30px;">
+            <select class="form-control" ng-change="getData()" ng-model="category" style="width: 30%;margin-right: 20px; display: inline-block;">
+                <option value="">Select Category: </option>
+                <option ng-repeat="i in categories" value="{{i}}">{{i}}</option>
+            </select>
+            <select class="form-control" style="width: 20%;display: inline-block;" ng-model ="brand" ng-options="b for b in brandsList" ng-change="onBrandChange()">
+                    <option value="">Select Keyword: </option>
+            </select>
+            <div class="small-loader-container" ng-if="showSmallLoader">
+                <span class="main-loader small-loader">
+                </span>
+            </div>
+        </div>
+         <div class="main-loader" ng-if="showLoader">
+        </div>
+        <div ng-show = "no_data_msg.length > 0">
+            {{no_data_msg}}
+        </div>
+        <div style="width: 55%; margin-left: 10%; margin-top: 50px;text-align: center;" ng-if="data.length > 0">
+            <label class="chart-title">Trend of {{brand}} across 5 years</label>
+            <canvas id="line" class="chart chart-line" chart-data="data"
+                chart-labels="labels" chart-series="series" chart-options="options1"
+                chart-dataset-override="datasetOverride2" chart-click="onClick" chart-colors="colours">
+            </canvas>
+        </div>
+
+        <div style="width: 55%; margin-left: 10%; margin-top: 50px;text-align: center;" ng-if="data.length > 0">
+            <label class="chart-title">Seasonality of {{brand}} across 5 years</label>
+            <canvas id="line" class="chart chart-line" chart-data="seasonalData"
+                chart-labels="labels" chart-series="series1" chart-options="options"
+                chart-dataset-override="datasetOverride" chart-click="onClick" chart-colors="colours1">
+            </canvas>
+        </div>
+
+        <div style="width: 55%; margin-left: 10%; margin-top: 50px;margin-bottom: 100px;text-align: center;" ng-if="data.length > 0">
+            <label class="chart-title">Comparison of {{brand}} over 5 years</label>
+            <canvas id="line" class="chart chart-line" chart-data="monthlyData"
+                chart-labels="monthlyLabels" chart-series="series2" chart-options="options2"
+                chart-dataset-override="datasetOverride1" chart-click="onClick" chart-colors="colours2">
+            </canvas>
+        </div>
+    </body>
+
+
+
+    <script src="/js/bootstrap.min.js"></script>
+<script src="/js/angular.min.js"></script>
+<script src="/js/underscore.min.js"></script>
+<script src="/js/Chart.min.js"></script>
+<script src="/js/angular-chart.min.js"></script>
+<script>
+    var demoApp = angular.module('demoApp', ['chart.js'])
+        .config(["ChartJsProvider", function(ChartJsProvider) {
+            //ChartJsProvider.setOptions({ colors : [ '#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff'] });
+        }]);
+</script>
+<script src="/js/GeneralService.js"></script>
+<script src="/js/MainController.js"></script>
+
+</head>
